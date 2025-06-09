@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mans World</title>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Base styles for body and font */
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem; /* Reduced padding for mobile */
+            margin: 0;
+            overflow-y: auto; /* Allow vertical scrolling if content overflows */
+            color: #ffffff; /* Default text color for dark background */
+            /* New: Deep charcoal/blue-gray gradient for background */
+            background: linear-gradient(135deg, #0a0d14 0%, #10151c 50%, #080a10 100%);
+            background-size: 400% 400%; /* For animating the gradient */
+            animation: gradientAnimation 30s ease infinite; /* Slower, smoother animation */
+        }
+
+        /* Gradient animation for body background */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* General card styling */
+        .card-container {
+            /* New: Subtler frosted glass effect */
+            background: rgba(255, 255, 255, 0.02); /* Even more transparent */
+            backdrop-filter: blur(35px); /* Stronger blur */
+            border-radius: 28px; /* Slightly less rounded for a more compact look */
+            padding: 2.5rem; /* Significantly reduced padding for mobile */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7); /* Adjusted shadow for mobile */
+            border: 1px solid rgba(255, 255, 255, 0.08); /* Subtler border */
+            max-width: 98%; /* Even more responsive max-width */
+            width: 360px; /* Specific smaller width for mobile focus */
+            animation: fadeIn 1s ease-out;
+            transform: scale(1);
+            transition: transform 0.3s ease-in-out;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box; /* Ensure padding is included in width */
+        }
+
+        /* Fade-in animation for main content */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); } /* Reduced initial translateY */
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header styling */
+        .app-title {
+            font-weight: 800;
+            /* New: Gold to Burnt Orange Gradient for text */
+            background: linear-gradient(90deg, #FFD700, #DAA520); /* Gold to Goldenrod */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem; /* Smaller font size for mobile */
+            margin-bottom: 2.5rem; /* Reduced margin below title */
+            transition: all 0.3s ease-in-out;
+            text-align: center; /* Ensure title is centered */
+        }
+
+        /* Content display area */
+        #content-display {
+            min-height: 120px; /* Smaller min-height for mobile */
+            background: rgba(0, 0, 0, 0.65); /* Slightly darker, more opaque background */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Subtler border */
+            font-style: normal;
+            font-size: 1.1rem; /* Smaller font size for content */
+            line-height: 1.6; /* Adjusted line height for readability */
+            letter-spacing: 0.01em; /* Subtle letter spacing */
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8); /* Deeper text shadow */
+            transition: all 0.4s ease-in-out; /* Smoother transition */
+            overflow-y: auto;
+            max-height: 200px; /* Reduced max height */
+            text-align: center;
+            padding: 1.5rem; /* Reduced padding */
+            border-radius: 20px; /* Reduced rounded corners */
+            margin-bottom: 1.5rem; /* Reduced space below content */
+        }
+
+        /* Info text styling */
+        #info-primary, #info-secondary {
+            font-weight: 600;
+            color: #d8dbe0; /* Lighter gray for info */
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6); /* Adjusted text shadow */
+            font-size: 0.9rem; /* Smaller font size for info */
+        }
+        #info-secondary {
+            font-size: 0.8rem; /* Even smaller secondary info */
+            color: #b0b8c6; /* Mid-tone blue-gray */
+        }
+
+        /* Button group layout */
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr; /* Stack buttons vertically on mobile */
+            gap: 1.25rem; /* Reduced space between buttons */
+            margin-top: 2.5rem; /* Reduced space above buttons */
+            width: 100%;
+        }
+
+        /* Button styling with shadows and hover effects */
+        .action-button {
+            /* New: Dark Steel Blue to Blue-Gray Gradient for buttons */
+            background: linear-gradient(45deg, #152238, #2a5298); /* Very dark blue to deeper blue */
+            color: white;
+            font-weight: bold;
+            padding: 0.9rem 1.5rem; /* Reduced padding for mobile */
+            border-radius: 16px; /* Reduced roundedness */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7); /* Adjusted shadow for mobile */
+            transition: all 0.2s ease-out; /* Quicker, smoother transition */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem; /* Reduced space between icon and text */
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em; /* Reduced letter spacing */
+            font-size: 0.95rem; /* Smaller font size for buttons */
+        }
+        .action-button:hover {
+            background: linear-gradient(45deg, #2a5298, #152238); /* Reverse gradient on hover */
+            transform: translateY(-2px); /* Subtler lift */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8); /* Adjusted shadow on hover */
+        }
+        .action-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        .action-button:disabled {
+            opacity: 0.25; /* More faded when disabled */
+            cursor: not-allowed;
+            background: #3f4a5c; /* Darker gray out */
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3); /* Slightly thinner border */
+            border-top-color: #FFD700; /* Gold accent for spinner */
+            border-radius: 50%;
+            width: 40px; /* Smaller spinner */
+            height: 40px;
+            animation: spin 0.7s linear infinite; /* Faster spin */
+        }
+
+        /* Copy button styling */
+        #content-action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem; /* Reduced space between copy/share */
+            margin-top: 1.2rem; /* Reduced space below content-display, above info */
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #content-action-buttons.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .action-icon-button {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.18); /* Subtler border */
+            color: white;
+            padding: 0.6rem 1rem; /* Reduced padding */
+            border-radius: 14px; /* Reduced roundedness */
+            font-size: 0.9rem; /* Smaller font size */
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem; /* Reduced space */
+            opacity: 0.9;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.5); /* Adjusted shadow */
+        }
+        .action-icon-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            opacity: 1;
+            transform: translateY(-1px); /* Subtler lift */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+        }
+        .action-icon-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        /* Footer styling */
+        .app-footer {
+            margin-top: 3rem; /* Reduced space above footer */
+            font-size: 0.8rem; /* Smaller font size */
+            color: rgba(255, 255, 255, 0.35); /* More subtle color */
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        /* Content fade-in animation */
+        @keyframes contentFadeIn {
+            from { opacity: 0; transform: translateY(10px); } /* Reduced starting point */
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .content-fade-in {
+            animation: contentFadeIn 0.6s ease-out; /* Slightly faster fade-in */
+        }
+
+        /* Media query for larger screens to apply original sizes */
+        @media (min-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .card-container {
+                border-radius: 36px;
+                padding: 4.5rem;
+                max-width: 95%;
+                width: 550px;
+                box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+            }
+            .app-title {
+                font-size: 4rem;
+                margin-bottom: 4rem;
+            }
+            #content-display {
+                min-height: 200px;
+                font-size: 1.7rem;
+                line-height: 2;
+                letter-spacing: 0.02em;
+                text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+                padding: 2.8rem;
+                border-radius: 32px;
+                margin-bottom: 2.8rem;
+            }
+            #info-primary {
+                font-size: 1.1rem;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+            }
+            #info-secondary {
+                font-size: 1.1rem;
+            }
+            .button-group {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 2.25rem;
+                margin-top: 4.5rem;
+            }
+            .action-button {
+                padding: 1.4rem 2.4rem;
+                border-radius: 24px;
+                box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75);
+                letter-spacing: 0.18em;
+                font-size: 1.25rem;
+            }
+            .spinner {
+                border: 5px solid rgba(255, 255, 255, 0.3);
+                width: 60px;
+                height: 60px;
+            }
+            #content-action-buttons {
+                gap: 1.5rem;
+                margin-top: 2rem;
+            }
+            .action-icon-button {
+                padding: 0.9rem 1.4rem;
+                border-radius: 18px;
+                font-size: 1.05rem;
+                gap: 0.6rem;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            }
+            .app-footer {
+                margin-top: 5.5rem;
+                font-size: 1rem;
+            }
+            @keyframes contentFadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .content-fade-in {
+                animation: contentFadeIn 0.7s ease-out;
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <!-- Main App Container - Always visible -->
+    <div id="main-app-container" class="main-container card-container flex flex-col items-center active">
+        <h1 id="main-app-title" class="app-title mb-8">
+            Mans World: Explore
+        </h1>
+
+        <div id="content-display" class="w-full text-lg md:text-xl rounded-xl shadow-inner border flex items-center justify-center p-4">
+            "Welcome to Mans World! Select a category below to get started."
+        </div>
+
+        <div id="content-action-buttons" class="hidden">
+            <button id="copy-button" class="action-icon-button">
+                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m-2 4h.01M16 12h.01"></path>
+                </svg>
+                <span>Copy</span>
+            </button>
+        </div>
+
+        <div class="w-full text-right my-4">
+            <p id="info-primary" class="text-xl"></p>
+            <p id="info-secondary" class="text-lg"></p>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="hidden flex items-center justify-center my-4">
+            <div class="spinner"></div>
+            <span class="ml-2 text-gray-400">Fetching content...</span>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error-message" class="hidden text-red-400 font-medium my-4 p-3 bg-red-900 bg-opacity-30 border border-red-700 rounded-lg">
+            Failed to load content. Please ensure you are online or try again later.
+        </div>
+
+        <div class="button-group">
+            <button id="fetch-rizz-button" class="action-button">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Get Rizz</span>
+            </button>
+
+            <button id="fetch-anime-quote-button" class="action-button">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h10M7 16h10M12 21l-4-4H3a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v1l-4 4"></path>
+                </svg>
+                <span>Anime Quote</span>
+            </button>
+        </div>
+
+        <footer class="app-footer">
+            &copy; <span id="current-year"></span> Mans World. All rights reserved. v1.2
+        </footer>
+    </div>
+
+    <script>
+        // Get references to the DOM elements
+        const mainAppContainer = document.getElementById('main-app-container');
+        const mainAppTitle = document.getElementById('main-app-title');
+        const contentDisplay = document.getElementById('content-display');
+        const infoPrimaryElement = document.getElementById('info-primary');
+        const infoSecondaryElement = document.getElementById('info-secondary');
+
+        const fetchRizzButton = document.getElementById('fetch-rizz-button');
+        const fetchAnimeQuoteButton = document.getElementById('fetch-anime-quote-button');
+        // Removed fetchMotivationalAdviceButton reference
+
+        const loadingIndicator = document.getElementById('loading');
+        const errorMessage = document.getElementById('error-message');
+        const contentActionButtons = document.getElementById('content-action-buttons');
+        const copyButton = document.getElementById('copy-button');
+        const currentYearSpan = document.getElementById('current-year');
+
+        // API endpoints
+        const RIZZ_API_URL = 'https://rizzapi.vercel.app/random';
+        const ANIME_QUOTE_API_URL = 'https://yurippe.vercel.app/api/quotes?random=1';
+        // Removed MOTIVATIONAL_ADVICE_API_URL and associated local quotes
+
+        /**
+         * Generic function to display content and related information.
+         * @param {string} mainContent - The primary content (e.g., rizz line, quote).
+         * @param {string} primaryInfo - Additional primary information (e.g., category, author).
+         * @param {string} secondaryInfo - Additional secondary information (e.g., type, anime).
+         * @param {string} contentType - The type of content to display in the main title.
+         */
+        function displayContent(mainContent, primaryInfo = '', secondaryInfo = '', contentType = 'Content') {
+            contentDisplay.classList.remove('content-fade-in');
+            void contentDisplay.offsetWidth; // Trigger reflow to restart animation
+            contentDisplay.textContent = mainContent;
+            contentDisplay.classList.add('content-fade-in');
+
+            infoPrimaryElement.textContent = primaryInfo;
+            infoSecondaryElement.textContent = secondaryInfo;
+            contentActionButtons.classList.add('active'); // Show copy button group
+            mainAppTitle.textContent = `Mans World: ${contentType}`; // Update the main app title
+        }
+
+        /**
+         * Sets the loading state of the UI.
+         * Disables all action buttons, shows the spinner, and hides error messages.
+         */
+        function setLoadingState() {
+            // Disable all action buttons
+            fetchRizzButton.disabled = true;
+            fetchAnimeQuoteButton.disabled = true;
+            // Removed fetchMotivationalAdviceButton.disabled = true;
+
+            loadingIndicator.classList.remove('hidden');
+            errorMessage.classList.add('hidden');
+            contentActionButtons.classList.remove('active'); // Hide copy button during loading
+            displayContent('Fetching amazing content...', '', '', 'Loading...'); // Update title to Loading
+        }
+
+        /**
+         * Resets the UI state after fetching.
+         * Enables all action buttons and hides the loading spinner.
+         */
+        function resetUIState() {
+            // Enable all action buttons
+            fetchRizzButton.disabled = false;
+            fetchAnimeQuoteButton.disabled = false;
+            // Removed fetchMotivationalAdviceButton.disabled = false;
+
+            loadingIndicator.classList.add('hidden');
+        }
+
+        /**
+         * Handles errors during API calls.
+         * @param {Error} error - The error object.
+         * @param {string} type - The type of content that failed to load.
+         */
+        function handleError(error, type = 'Content') {
+            console.error(`Error fetching ${type}:`, error);
+            displayContent(
+                `Failed to load ${type}. This might be a temporary service issue or network problem. Please try again!`,
+                'Source: Online Service Error',
+                'Please check your connection and try again.',
+                'Error'
+            );
+            infoPrimaryElement.textContent = `N/A - ${type} Service Error`;
+            infoSecondaryElement.textContent = 'Please check your connection and try again.';
+            contentActionButtons.classList.remove('active');
+            errorMessage.classList.remove('hidden');
+        }
+
+        /**
+         * Copies the current content to the clipboard.
+         */
+        function copyContentToClipboard() {
+            const textToCopy = contentDisplay.textContent;
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                copyButton.innerHTML = '<svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m-2 4h.01M16 12h.01"></path></svg><span>Copied!</span>';
+                setTimeout(() => {
+                    copyButton.innerHTML = '<svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m-2 4h.01M16 12h.01"></path></svg><span>Copy</span>';
+                }, 1500);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+
+        /**
+         * Fetches a random rizz line from the PickupLinesAPI.
+         */
+        async function fetchRandomRizz() {
+            setLoadingState();
+            try {
+                const response = await fetch(RIZZ_API_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(`API error: ${data.message}`);
+                }
+
+                displayContent(
+                    `"${data.text || 'No rizz line available.'}"`,
+                    `- Category: ${data.category || 'General Rizz'}`,
+                    `Language: ${data.language || 'English'}`,
+                    'Rizz'
+                );
+
+            } catch (error) {
+                handleError(error, 'Rizz'); // Pass type to handleError
+            } finally {
+                resetUIState();
+            }
+        }
+
+        /**
+         * Fetches a random anime quote from the Anime Quotes API (yurippe.vercel.app).
+         */
+        async function fetchAnimeQuote() {
+            setLoadingState();
+            try {
+                const response = await fetch(ANIME_QUOTE_API_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const jsonResponse = await response.json();
+
+                if (jsonResponse && jsonResponse.length > 0) {
+                    const data = jsonResponse[0];
+                    const characterName = data.character || 'Unknown';
+
+                    displayContent(
+                        `"${data.quote || 'No quote available.'}"`,
+                        `- Character: ${characterName}`,
+                        `Anime: ${data.show || 'Unknown Series'}`,
+                        'Anime Quote'
+                    );
+                } else {
+                    throw new Error('API returned no quote data.');
+                }
+
+            } catch (error) {
+                handleError(error, 'Anime Quote'); // Pass type to handleError
+            } finally {
+                resetUIState();
+            }
+        }
+
+        // Removed fetchMotivationalAdvice function as the button is removed.
+
+        // Event listeners for content buttons
+        fetchRizzButton.addEventListener('click', fetchRandomRizz);
+        fetchAnimeQuoteButton.addEventListener('click', fetchAnimeQuote);
+        copyButton.addEventListener('click', copyContentToClipboard);
+
+        // Logic for initial app load (no splash screen)
+        document.addEventListener('DOMContentLoaded', () => {
+            currentYearSpan.textContent = new Date().getFullYear();
+            mainAppContainer.classList.add('active'); // Ensure main app is visible on load
+            fetchRizzButton.click(); // Load initial content automatically
+        });
+    </script>
+</body>
+</html>
